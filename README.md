@@ -1,0 +1,51 @@
+# MetroMind
+
+**A metro route puzzle across seven cities.** Pick a direction, let the train run to the next interchange, branch, terminus or target, and reach your destination after visiting every required stop. The challenge is to find the fastest route.
+
+**[Play MetroMind](https://metromind.it)** · [Study the maps](https://metromind.it/maps.html)
+
+Available in English and Italian. Designed for phones and installable from the browser on Android.
+
+## Cities
+
+Milan · Lisbon · Vienna · Barcelona · Berlin · Paris · London
+
+Each city has a playable network and a full map where you can search for stations, filter lines and zoom in.
+
+## How it works
+
+1. Start and destination are chosen at random. The level sets one, two or three stations you **must visit**.
+2. Choose a direction. The train continues automatically until it reaches a decision point, a required stop or the destination.
+3. Visit all required stations in any order, then reach the destination. Your time is compared with the shortest possible route.
+
+The route solver searches states made of the current station, current line and visited required stops. It uses a priority queue to find the minimum game time. A regular stop costs 2 minutes, changing lines adds 4 minutes, and marked walking links cost 5 minutes. **These are game rules, not real timetables.**
+
+## Run locally
+
+This is a static site. Open `index.html` in a browser, or serve the directory with a local static server. No account or API key is needed.
+
+With Node.js installed:
+
+```sh
+npm test
+npm run build
+```
+
+`npm test` checks the city networks and selected routes. `npm run build` creates the deployable site in `dist/`.
+
+## Project notes
+
+- The interface is mobile first and available in Italian and English.
+- The complete maps let players study each network before or during a game.
+- A service worker caches the game after the first visit for offline play.
+- The game is hosted at [metromind.it](https://metromind.it). This repository contains the public game source; deployment configuration is kept separately.
+
+## Network sources and credits
+
+The networks were reconstructed from the [ATM map](https://www.atm.it/it/AltriServizi/Trasporto/Documents/schema_rete_metro.pdf), [Metro de Lisboa diagram](https://www.metrolisboa.pt/wp-content/uploads/2026/08/DiagramaRedeAgosto2026.pdf), [Wiener Linien maps](https://www.wienerlinien.at/web/guest/fahrplaene), [TMB map](https://www.tmb.cat/ca/barcelona-transport/map/metro), [BVG U-Bahn lines](https://www.bvg.de/de/verbindungen/netzplaene-und-linien/u-bahn), [Île-de-France Mobilités GTFS](https://prim.iledefrance-mobilites.fr/en/jeux-de-donnees/offre-horaires-tc-gtfs-idfm) and the [TfL API](https://api.tfl.gov.uk/). The diagrams are original, schematic drawings. MetroMind is not affiliated with the transit operators.
+
+The included [IBM Plex Sans Condensed](https://github.com/IBM/plex) font is distributed under the [SIL Open Font License](fonts/OFL.txt).
+
+---
+
+**In italiano:** MetroMind è un gioco di logica sulle metropolitane di sette città. Parti da una stazione casuale, visita tutte le fermate obbligatorie e raggiungi l'arrivo nel minor tempo possibile. [Gioca online](https://metromind.it) o [studia le mappe](https://metromind.it/maps.html).

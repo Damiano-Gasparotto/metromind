@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#172126">
+  <meta name="google-adsense-account" content="ca-pub-2124440759289035">
+  <title>MetroMind · Mappe</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="maps.css?v=15">
+</head>
+<body>
+  <main class="atlas">
+    <header class="masthead">
+      <a class="identity" href="./" aria-label="MetroMind, homepage"><span class="identity-mark">M</span><span>METROMIND<small>METRO PUZZLE</small></span></a>
+      <nav class="top-nav" aria-label="Navigation"><a href="./" data-i18n="home">Città</a><a id="playLink" href="game.html?city=milano" data-i18n="play">Gioca</a></nav>
+      <div class="languages" role="group" aria-label="Language"><button type="button" data-lang="it">IT</button><button type="button" data-lang="en">EN</button></div>
+    </header>
+    <section class="atlas-intro"><div class="section-code"><span class="signal"></span> METROMIND <span>MAP / 01</span></div><h1 data-i18n="mapTitle">MAPPE COMPLETE</h1><p data-i18n="mapIntro">Scegli una rete, cerca una stazione e scorri la mappa.</p></section>
+    <nav class="city-tabs" aria-label="City"><a href="maps.html?city=milano" data-city="milano" data-i18n="milanName">MILANO</a><a href="maps.html?city=lisbona" data-city="lisbona" data-i18n="lisbonNameUpper">LISBONA</a><a href="maps.html?city=vienna" data-city="vienna" data-i18n="viennaNameUpper">VIENNA</a><a href="maps.html?city=barcellona" data-city="barcellona" data-i18n="barcelonaNameUpper">BARCELLONA</a><a href="maps.html?city=berlino" data-city="berlino" data-i18n="berlinNameUpper">BERLINO</a><a href="maps.html?city=parigi" data-city="parigi" data-i18n="parisNameUpper">PARIGI</a><a href="maps.html?city=londra" data-city="londra" data-i18n="londonNameUpper">LONDRA</a></nav>
+    <div class="atlas-grid">
+      <section class="atlas-map" aria-label="Map"><div class="map-bar"><div><strong id="cityName">MILANO</strong><span id="mapStats"></span></div><span data-i18n="mapGesture">Trascina · pizzica o usa + e −</span></div><div id="mapViewport" class="atlas-viewport"><svg id="networkMap" role="img" aria-label="Mappa della rete metropolitana"></svg><div class="zoom-controls"><button id="zoomIn" type="button" data-i18n-aria="zoomIn" aria-label="Ingrandisci mappa">+</button><button id="zoomOut" type="button" data-i18n-aria="zoomOut" aria-label="Riduci mappa">−</button><button id="resetView" type="button" data-i18n-aria="resetView" aria-label="Vista completa">⌖</button></div></div><div id="selectedStation" class="selected-station" aria-live="polite"></div></section>
+      <aside class="station-panel"><label for="stationSearch" data-i18n="searchStation">Cerca una stazione</label><input id="stationSearch" type="search" autocomplete="off" data-i18n-placeholder="searchPlaceholder" placeholder="Nome della stazione"><div id="lineFilters" class="line-filters" role="group" aria-label="Lines"></div><div class="station-count"><strong id="resultsCount">0</strong><span data-i18n="stationCount">FERMATE</span></div><div id="stationList" class="station-list"></div><a id="playCity" class="play-city" href="game.html?city=milano"><span data-i18n="playCity">GIOCA IN QUESTA CITTÀ</span><b aria-hidden="true">→</b></a></aside>
+    </div>
+    <footer class="page-footer"><span>METROMIND</span><a id="mapSource" href="https://www.atm.it/it/AltriServizi/Trasporto/Documents/schema_rete_metro.pdf" target="_blank" rel="noopener" data-i18n="networkLink">rete ATM</a></footer>
+  </main>
+  <script src="network.js"></script><script src="lisbon.js"></script><script src="vienna.js"></script><script src="barcelona.js"></script><script src="berlin.js"></script><script src="paris.js"></script><script src="london.js"></script>
+  <script src="translations.js?v=15"></script><script src="maps.js?v=15"></script>
+  <script>if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./service-worker.js');</script>
+</body>
+</html>

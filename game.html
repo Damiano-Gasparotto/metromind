@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111d2b">
+  <meta name="google-adsense-account" content="ca-pub-2124440759289035">
+  <title>MetroMind</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css?v=15">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="MetroMind, homepage"><span class="brand-mark">M</span><div><strong>MetroMind</strong><small data-i18n="network">RETE MILANO · 5 LINEE</small></div></a>
+      <div class="header-actions"><a class="header-link" href="./" data-i18n="home">Città</a><button id="helpButton" class="header-link" type="button" data-i18n-aria="help" aria-label="Come si gioca">?</button><div class="languages" role="group" aria-label="Language"><button type="button" data-lang="it">IT</button><button type="button" data-lang="en">EN</button></div><button id="newGame" class="icon-button" type="button" data-i18n-aria="newGame" aria-label="Nuova partita">↻</button></div>
+    </header>
+
+    <section class="mission" aria-labelledby="missionTitle">
+      <div class="eyebrow"><span class="eyebrow-label" data-i18n="mission">LA TUA MISSIONE</span> <span id="levelPill">FACILE</span></div>
+      <h1 id="missionTitle" data-i18n="findRoute">Trova la tratta.</h1>
+      <div class="journey"><div><span data-i18n="start">PARTENZA</span><strong id="startName">—</strong></div><span class="journey-arrow">→</span><div><span data-i18n="arrival">ARRIVO</span><strong id="endName">—</strong></div></div>
+      <section class="route-objective" aria-labelledby="objectiveTitle">
+        <div class="objective-heading"><strong id="objectiveTitle" data-i18n="checkpoints">TAPPE OBBLIGATORIE</strong><span id="checkpointSummary">0/1</span></div>
+        <div id="checkpoints" class="checkpoints" aria-live="polite"></div>
+        <p id="objectiveHint" data-i18n="objectiveHint">Visita tutte le tappe e termina all'arrivo.</p>
+      </section>
+      <details id="missionDetails" class="mission-details">
+        <summary><span data-i18n="gameDetails">Dettagli partita</span><span class="summary-time" id="timeInline">0′</span></summary>
+        <div class="stats"><div><strong id="timeValue">0′</strong><span data-i18n="estimated">tempo stimato</span></div><div><strong id="stopValue">0</strong><span data-i18n="stops">fermate</span></div><div><strong id="transferValue">0</strong><span data-i18n="transfers">cambi</span></div></div>
+      </details>
+    </section>
+
+    <section class="map-card" data-i18n-aria="mapSection" aria-label="Mappa schematica della metropolitana">
+      <div class="map-heading"><strong data-i18n="map">SCHEMA RETE</strong><a id="studyMap" href="maps.html?city=milano" target="_blank" rel="noopener" data-i18n="fullMap">Mappa completa ↗</a></div>
+      <div id="mapViewport" class="map-viewport"><svg id="metroMap" role="img" data-i18n-aria="mapLabel" aria-label="Mappa interattiva delle cinque linee della metropolitana di Milano"></svg></div>
+      <div class="map-footer"><div class="legend"><i class="m1"></i>M1 <i class="m2"></i>M2 <i class="m3"></i>M3 <i class="m4"></i>M4 <i class="m5"></i>M5</div><div class="zoom"><button id="zoomOut" data-i18n-aria="zoomOut" aria-label="Riduci mappa">−</button><button id="zoomIn" data-i18n-aria="zoomIn" aria-label="Ingrandisci mappa">+</button></div></div>
+    </section>
+
+    <aside id="advertising" class="advertising" aria-label="Spazio pubblicitario" hidden>
+      <span class="ad-label">PUBBLICITÀ</span>
+      <div id="adUnit"></div>
+    </aside>
+
+    <section class="controls" data-i18n-aria="controlsLabel" aria-label="Controlli di gioco">
+      <div class="controls-title"><div><span data-i18n="current">FERMATA ATTUALE</span><strong id="currentName">—</strong></div><button id="undoButton" type="button" data-i18n="undo">↶ Indietro</button></div>
+      <p id="hintText">Scegli una direzione: il treno prosegue automaticamente.</p>
+      <div id="moves" class="moves"></div>
+      <div class="bottom-actions"><label for="difficulty" data-i18n="level">Livello</label><select id="difficulty"><option value="easy" data-i18n="easyOption">Facile · 1 tappa</option><option value="medium" data-i18n="mediumOption">Medio · 2 tappe</option><option value="hard" data-i18n="hardOption">Difficile · 3 tappe</option></select><button id="showSolution" type="button" data-i18n="showSolution">Mostra soluzione</button></div>
+    </section>
+    <div id="result" class="result" hidden></div>
+    <footer><span data-i18n="legal">Schema di gioco basato sulla</span> <a id="sourceLink" href="https://www.atm.it/it/AltriServizi/Trasporto/Documents/schema_rete_metro.pdf" target="_blank" rel="noopener" data-i18n="networkLink">rete ATM</a>. <span data-i18n="timing">Tempi indicativi: 2 min per fermata, 4 min per cambio. Non è un pianificatore di viaggio.</span></footer>
+  </main>
+  <dialog id="helpDialog" class="help-dialog" aria-labelledby="helpTitle"><div class="help-heading"><strong id="helpTitle" data-i18n="how">COME SI GIOCA</strong><button id="closeHelp" type="button" data-i18n-aria="howClose" aria-label="Chiudi">×</button></div><div class="help-step"><b>01</b><div><strong data-i18n="step1">PARTI</strong><span data-i18n="step1Body">Una stazione di partenza e una meta.</span></div></div><div class="help-step"><b>02</b><div><strong data-i18n="step2">PASSA</strong><span data-i18n="step2Body">Visita tutte le tappe indicate.</span></div></div><div class="help-step"><b>03</b><div><strong data-i18n="step3">VINCI</strong><span data-i18n="step3Body">Arriva nel minor tempo possibile.</span></div></div></dialog>
+  <script src="network.js"></script>
+  <script src="lisbon.js"></script>
+  <script src="vienna.js"></script>
+  <script src="barcelona.js"></script>
+  <script src="berlin.js"></script>
+  <script src="paris.js"></script>
+  <script src="london.js"></script>
+  <script src="translations.js?v=15"></script>
+  <script src="app.js?v=15"></script>
+  <script>if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./service-worker.js');</script>
+</body>
+</html>

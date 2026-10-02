@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#172126">
+  <meta name="google-adsense-account" content="ca-pub-2124440759289035">
+  <title>MetroMind · Cities</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="home.css?v=15">
+  <script>if (['milano','lisbona','vienna','barcellona','berlino','parigi','londra'].includes(new URLSearchParams(location.search).get('city'))) location.replace('game.html' + location.search);</script>
+</head>
+<body>
+  <main class="station-board">
+    <header class="masthead">
+      <a class="identity" href="./" aria-label="MetroMind, homepage"><span class="identity-mark">M</span><span>METROMIND<small>METRO PUZZLE</small></span></a>
+      <a class="maps-nav" href="maps.html" data-i18n="mapsNav">MAPPE</a>
+      <div class="languages" role="group" aria-label="Language"><button type="button" data-lang="it">IT</button><button type="button" data-lang="en">EN</button></div>
+    </header>
+    <section class="intro"><div class="section-code"><span class="signal"></span> METROMIND <span>01 / 07</span></div><h1 data-i18n="chooseCity">SCEGLI LA CITTÀ</h1></section>
+    <section class="city-list" data-i18n-aria="cityList" aria-label="Città disponibili e in arrivo">
+      <a class="city-card city-card-live" href="game.html?city=milano"><span class="city-meta"><span><i class="live-dot"></i> <span data-i18n="available">GIOCA ORA</span></span><span>01 / 07</span></span><span class="city-main"><span class="city-number">MI</span><span class="city-title"><strong data-city-name="milano">MILANO</strong><small data-city-lines="5">5 LINEE</small></span><span class="city-arrow" aria-hidden="true">↗</span></span><svg class="hero-tracks" viewBox="0 0 600 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M-20 112 130 112 202 40 390 40 500 150" stroke="#e12631"/><path d="M0 28 170 28 250 108 480 108 620 0" stroke="#168e55"/><path d="M90 160 235 15 380 160" stroke="#e3b728"/><path d="M250 160 360 50 615 50" stroke="#2588c7"/><path d="M170 -20 310 120 500 120" stroke="#a77bb9"/><g fill="#fff"><circle cx="202" cy="40" r="7"/><circle cx="250" cy="108" r="7"/><circle cx="360" cy="50" r="7"/><circle cx="310" cy="120" r="7"/></g></svg><span class="city-action"><span data-i18n="play">GIOCA</span><b aria-hidden="true">→</b></span></a>
+      <div class="upcoming-title"><span data-i18n="otherCities">ALTRE RETI</span><span>02—07</span></div>
+      <div id="upcomingGrid" class="upcoming-grid"></div>
+    </section>
+    <section class="study-section" aria-labelledby="studyTitle"><div class="study-heading"><div><span class="section-code">03 / 07 · METROMIND</span><h2 id="studyTitle" data-i18n="studyMaps">STUDIA LE MAPPE</h2></div><span data-i18n="studyHint">TUTTE LE FERMATE</span></div><div class="study-links"><a href="maps.html?city=milano"><span>M1—M5</span><strong data-i18n="milanName">MILANO</strong><b aria-hidden="true">↗</b></a><a href="maps.html?city=lisbona"><span data-i18n="fourLines">4 LINEE</span><strong data-i18n="lisbonNameUpper">LISBONA</strong><b aria-hidden="true">↗</b></a><a href="maps.html?city=vienna"><span>U1—U6</span><strong data-i18n="viennaNameUpper">VIENNA</strong><b aria-hidden="true">↗</b></a><a href="maps.html?city=barcellona"><span data-i18n="eightLines">8 LINEE</span><strong data-i18n="barcelonaNameUpper">BARCELLONA</strong><b aria-hidden="true">↗</b></a><a href="maps.html?city=berlino"><span>U1—U9</span><strong data-i18n="berlinNameUpper">BERLINO</strong><b aria-hidden="true">↗</b></a><a href="maps.html?city=parigi"><span data-i18n="sixteenLines">16 LINEE</span><strong data-i18n="parisNameUpper">PARIGI</strong><b aria-hidden="true">↗</b></a><a href="maps.html?city=londra"><span data-i18n="elevenLines">11 LINEE</span><strong data-i18n="londonNameUpper">LONDRA</strong><b aria-hidden="true">↗</b></a></div></section>
+    <section id="how-to-play" class="how-to-play" aria-labelledby="howTitle"><h2 id="howTitle" data-i18n="how">COME SI GIOCA</h2><div class="steps"><div><b>01</b><strong data-i18n="step1">PARTI</strong><span data-i18n="step1Body">Una stazione di partenza e una meta.</span></div><div><b>02</b><strong data-i18n="step2">PASSA</strong><span data-i18n="step2Body">Visita tutte le tappe indicate.</span></div><div><b>03</b><strong data-i18n="step3">VINCI</strong><span data-i18n="step3Body">Arriva nel minor tempo possibile.</span></div></div></section>
+    <footer class="page-footer">METROMIND <span>01 / 07</span></footer>
+  </main>
+  <dialog id="cityDialog" class="city-dialog" aria-labelledby="dialogTitle"><div class="dialog-top"><span data-i18n="preview">ANTEPRIMA</span><button id="closeDialog" type="button" aria-label="Close">×</button></div><div class="dialog-code" id="dialogCode"></div><h2 id="dialogTitle"></h2><div class="dialog-info"><span id="dialogLines"></span><span data-i18n="coming">IN ARRIVO</span></div><button id="dialogBack" class="dialog-back" type="button"><span data-i18n="back">TORNA ALLE CITTÀ</span><b>→</b></button></dialog>
+  <script src="translations.js?v=15"></script><script src="home.js?v=15"></script>
+  <script>if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./service-worker.js');</script>
+</body>
+</html>
