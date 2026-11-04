@@ -22,9 +22,15 @@ const COPY = {
 };
 
 let language = localStorage.getItem('metromind-language') === 'en' ? 'en' : 'it';
+Object.assign(COPY.it, {homeSummary:'Un puzzle di percorsi: visita tutte le tappe obbligatorie e trova la strada più rapida.',learnTitle:'LEGGI LA RETE',learnIntro:'Regole, interscambi e missioni svolte: scopri come ragionare sul percorso prima di salire.',fullGuide:'Guida completa ↗',guideLink:'Guida',projectLink:'Il progetto',privacyLink:'Privacy e cookie',cityGuide:'Guida della città'});
+Object.assign(COPY.en, {homeSummary:'A route puzzle: visit every required stop and find the fastest way.',learnTitle:'READ THE NETWORK',learnIntro:'Rules, interchanges and worked missions: learn to plan your route before boarding.',fullGuide:'Complete guide ↗',guideLink:'Guide',projectLink:'About',privacyLink:'Privacy & cookies',cityGuide:'City guide'});
 const t = key => COPY[language][key] ?? key;
+Object.assign(COPY.it,{dailyTitle:'SFIDA DEL GIORNO',dailyBrief:'Due tappe. Una missione uguale per tutti.',dailyRestart:'Ricomincia la sfida',dailyReplay:'Riprova la sfida →',freePlay:'Partita libera →',shareResult:'Condividi risultato',saveCard:'Scarica tessera',assisted:'Soluzione consultata',unassisted:'Senza consultare la soluzione',shareCopied:'Risultato copiato!',shareFallback:'Copia questo risultato:',shareFailed:'Condivisione non disponibile. Puoi copiare il testo qui sotto.',sharedTime:'Tempo di gioco',shareInvite:'Riesci a fare meglio?'});
+Object.assign(COPY.en,{dailyTitle:'DAILY CHALLENGE',dailyBrief:'Two required stops. The same mission for everyone.',dailyRestart:'Restart challenge',dailyReplay:'Retry challenge →',freePlay:'Free play →',shareResult:'Share result',saveCard:'Download card',assisted:'Solution viewed',unassisted:'Without viewing the solution',shareCopied:'Result copied!',shareFallback:'Copy this result:',shareFailed:'Sharing is unavailable. Copy the text below.',sharedTime:'Game time',shareInvite:'Can you do better?'});
 function applyLanguage() {
   document.documentElement.lang = language;
+  document.querySelectorAll('[data-content-it]').forEach(el => { el.href = language === 'en' ? el.dataset.contentEn : el.dataset.contentIt; });
+  document.querySelectorAll('[data-content-city]').forEach(el => { el.href = `${language === 'en' ? 'en/cities' : 'citta'}/${el.dataset.contentCity}.html`; });
   document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
   document.querySelectorAll('[data-lang]').forEach(el => { el.setAttribute('aria-pressed', String(el.dataset.lang === language)); });

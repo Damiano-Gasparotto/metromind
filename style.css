@@ -190,3 +190,5 @@ footer a { color: #ae2129; }
   .result { grid-area: result; }
   footer { display: block; grid-area: footer; }
 }
+ .content-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid #aab3b2;font-size:13px}.content-links a{color:inherit}
+.daily-banner{background:#f2d669;padding:7px 10px;margin-bottom:10px;font-weight:700;letter-spacing:1px;font-size:12px}.daily-banner[hidden]{display:none}.result-actions{display:flex;gap:8px;flex-wrap:wrap}.result-actions button,.result-actions a{min-height:44px;display:inline-flex;align-items:center;justify-content:center}.result-actions a{padding:8px 13px;color:#172126;font-weight:700}.result textarea{display:block;width:100%;margin-top:8px;background:#fff;color:#172126;font:inherit;padding:12px;border:1px solid #172126}.result label[hidden]{display:none}.result #shareStatus:empty{display:none}

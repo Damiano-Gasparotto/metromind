@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "node build.mjs",
-    "test": "node verify.js"
+    "test": "node verify.js && node verify-daily.cjs",
+    "preview": "node tools/preview.mjs"
   }
 }

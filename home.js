@@ -27,6 +27,9 @@ function renderCities() {
     if(!live) button.addEventListener('click',() => { activeCity = city; renderDialog(); dialog.showModal(); });
     return button;
   }));
+  const daily=MetroDaily.descriptor();
+  document.getElementById('dailyCard').href=daily.url;
+  document.getElementById('dailyCity').textContent=`${names[language][daily.city]} · ${daily.date}`;
   if(activeCity) renderDialog();
 }
 function renderDialog() {

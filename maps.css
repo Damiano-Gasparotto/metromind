@@ -12,3 +12,4 @@
 .page-footer a{color:inherit}
 @media(min-width:900px){.atlas{padding:0 24px 24px}.atlas-intro{padding:32px 0 24px}.atlas-grid{grid-template-columns:minmax(0,1fr) 320px}.atlas-viewport{height:min(67dvh,760px);min-height:510px}.station-list{max-height:calc(min(67dvh,760px) - 205px)}}
 @media(max-width:430px){.atlas{padding:0 7px 15px}.identity{font-size:16px}.identity-mark{width:31px;height:31px;font-size:24px}.identity small{display:none}.top-nav a{min-width:42px;padding:0 5px;font-size:11px}.languages button{min-width:28px}.atlas-intro h1{font-size:39px}.city-tabs a{font-size:11px;padding-inline:2px}.map-bar>span{max-width:125px}.atlas-viewport{height:54dvh;min-height:355px}}
+.content-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid #aab3b2;font-size:13px}.content-links a{color:inherit}

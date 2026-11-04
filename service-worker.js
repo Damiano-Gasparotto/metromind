@@ -1,7 +1,7 @@
-const CACHE = 'metromind-v15';
-const ASSETS = ['./','./index.html','./game.html','./maps.html','./style.css','./maps.css','./maps.js','./network.js','./lisbon.js','./vienna.js','./barcelona.js','./berlin.js','./paris.js','./london.js','./translations.js','./app.js','./home.css','./home.js','./icon.svg','./manifest.webmanifest','./fonts/IBMPlexSansCondensed-Regular.ttf','./fonts/IBMPlexSansCondensed-SemiBold.ttf','./fonts/IBMPlexSansCondensed-Bold.ttf'];
+const CACHE = 'metromind-v17';
+const ASSETS = ['./','./index.html','./game.html','./maps.html','./style.css','./maps.css','./maps.js','./network.js','./lisbon.js','./vienna.js','./barcelona.js','./berlin.js','./paris.js','./london.js','./translations.js','./app.js','./daily.js','./home.css','./home.js','./icon.svg','./manifest.webmanifest','./fonts/IBMPlexSansCondensed-Regular.ttf','./fonts/IBMPlexSansCondensed-SemiBold.ttf','./fonts/IBMPlexSansCondensed-Bold.ttf'];
 self.addEventListener('install',event=>{
-  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
+  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll([...ASSETS,'./content.css','./content-language.js','./guida.html','./progetto.html','./privacy.html'])).then(()=>self.skipWaiting()));
 });
 self.addEventListener('activate',event=>{
   event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
@@ -9,7 +9,13 @@ self.addEventListener('activate',event=>{
 self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET')return;
   if(event.request.mode==='navigate'){
-    event.respondWith(fetch(event.request).catch(async()=>{
+    event.respondWith(fetch(event.request).then(response=>{
+      if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+        const copy=response.clone();
+        event.waitUntil(caches.open(CACHE).then(cache=>cache.put(event.request,copy)));
+      }
+      return response;
+    }).catch(async()=>{
       const cached=await caches.match(event.request,{ignoreSearch:true});
       if(cached)return cached;
       const path=new URL(event.request.url).pathname;

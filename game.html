@@ -6,8 +6,9 @@
   <meta name="theme-color" content="#111d2b">
   <meta name="google-adsense-account" content="ca-pub-2124440759289035">
   <title>MetroMind</title>
+  <meta name="description" content="Gioca con le metropolitane di sette città. Scegli una direzione, visita tutte le tappe obbligatorie e confronta il tuo percorso con la soluzione minima.">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="style.css?v=15">
+  <link rel="stylesheet" href="style.css?v=17">
 </head>
 <body>
   <main class="app">
@@ -17,6 +18,7 @@
     </header>
 
     <section class="mission" aria-labelledby="missionTitle">
+      <div id="dailyBanner" class="daily-banner" hidden></div>
       <div class="eyebrow"><span class="eyebrow-label" data-i18n="mission">LA TUA MISSIONE</span> <span id="levelPill">FACILE</span></div>
       <h1 id="missionTitle" data-i18n="findRoute">Trova la tratta.</h1>
       <div class="journey"><div><span data-i18n="start">PARTENZA</span><strong id="startName">—</strong></div><span class="journey-arrow">→</span><div><span data-i18n="arrival">ARRIVO</span><strong id="endName">—</strong></div></div>
@@ -50,6 +52,8 @@
     </section>
     <div id="result" class="result" hidden></div>
     <footer><span data-i18n="legal">Schema di gioco basato sulla</span> <a id="sourceLink" href="https://www.atm.it/it/AltriServizi/Trasporto/Documents/schema_rete_metro.pdf" target="_blank" rel="noopener" data-i18n="networkLink">rete ATM</a>. <span data-i18n="timing">Tempi indicativi: 2 min per fermata, 4 min per cambio. Non è un pianificatore di viaggio.</span></footer>
+    <nav class="content-links" aria-label="Informazioni"><a id="cityGuide" href="citta/milano.html" data-content-city="milano" data-i18n="cityGuide">Guida della città</a><a href="guida.html" data-content-it="guida.html" data-content-en="en/guide.html" data-i18n="guideLink">Guida</a><a href="progetto.html" data-content-it="progetto.html" data-content-en="en/about.html" data-i18n="projectLink">Il progetto</a><a href="privacy.html" data-content-it="privacy.html" data-content-en="en/privacy.html" data-i18n="privacyLink">Privacy e cookie</a></nav>
+    <noscript><p>Il gioco interattivo richiede JavaScript. Puoi leggere la <a href="guida.html">guida</a> e le <a href="citta/milano.html">schede delle reti</a> anche senza JavaScript.</p></noscript>
   </main>
   <dialog id="helpDialog" class="help-dialog" aria-labelledby="helpTitle"><div class="help-heading"><strong id="helpTitle" data-i18n="how">COME SI GIOCA</strong><button id="closeHelp" type="button" data-i18n-aria="howClose" aria-label="Chiudi">×</button></div><div class="help-step"><b>01</b><div><strong data-i18n="step1">PARTI</strong><span data-i18n="step1Body">Una stazione di partenza e una meta.</span></div></div><div class="help-step"><b>02</b><div><strong data-i18n="step2">PASSA</strong><span data-i18n="step2Body">Visita tutte le tappe indicate.</span></div></div><div class="help-step"><b>03</b><div><strong data-i18n="step3">VINCI</strong><span data-i18n="step3Body">Arriva nel minor tempo possibile.</span></div></div></dialog>
   <script src="network.js"></script>
@@ -59,8 +63,9 @@
   <script src="berlin.js"></script>
   <script src="paris.js"></script>
   <script src="london.js"></script>
-  <script src="translations.js?v=15"></script>
-  <script src="app.js?v=15"></script>
+  <script src="translations.js?v=17"></script>
+  <script src="daily.js?v=17"></script>
+  <script src="app.js?v=17"></script>
   <script>if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./service-worker.js');</script>
 </body>
 </html>

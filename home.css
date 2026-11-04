@@ -38,3 +38,4 @@
 @media(min-width:720px){.study-links{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:719px){.study-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:350px){.maps-nav{padding:0 4px;font-size:10px}.maps-nav+.languages{margin-left:2px}.languages button{min-width:29px}}
+.daily-card {display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px;margin:0 0 24px;border:2px solid #172126;background:#f2d669;color:#172126;text-decoration:none}.daily-card>span{display:grid;gap:6px}.daily-card small{font-weight:700;letter-spacing:2px}.daily-card strong{font-size:clamp(24px,5vw,38px)}.daily-card b{font-size:40px}.daily-card:hover{background:#ead05f}

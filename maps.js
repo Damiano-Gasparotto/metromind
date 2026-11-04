@@ -8,6 +8,11 @@ const mapCities = {
   londra: {network:buildNetwork(LONDON_LINES,LONDON_ANCHORS,LONDON_WALK_LINKS,3000,2000), name:'londonNameUpper', source:'https://tfl.gov.uk/maps/track/tube', sourceLabel:'londonSource', mapLabel:'londonMapLabel'}
 };
 const mapCity = mapCities[new URLSearchParams(location.search).get('city')] ? new URLSearchParams(location.search).get('city') : 'milano';
+const cityGuideLink = document.getElementById('cityGuide');
+if (cityGuideLink) {
+  cityGuideLink.dataset.contentCity = mapCity;
+  cityGuideLink.href = `${language === 'en' ? 'en/cities' : 'citta'}/${mapCity}.html`;
+}
 const mapConfig = mapCities[mapCity];
 const mapNetwork = mapConfig.network;
 const mapSvgNS = 'http://www.w3.org/2000/svg';

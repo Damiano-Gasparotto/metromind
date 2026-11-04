@@ -6,8 +6,9 @@
   <meta name="theme-color" content="#172126">
   <meta name="google-adsense-account" content="ca-pub-2124440759289035">
   <title>MetroMind · Mappe</title>
+  <meta name="description" content="Consulta le reti metropolitane di sette città: cerca stazioni, filtra le linee e studia gli interscambi per migliorare le tue partite a MetroMind.">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="maps.css?v=15">
+  <link rel="stylesheet" href="maps.css?v=17">
 </head>
 <body>
   <main class="atlas">
@@ -23,9 +24,11 @@
       <aside class="station-panel"><label for="stationSearch" data-i18n="searchStation">Cerca una stazione</label><input id="stationSearch" type="search" autocomplete="off" data-i18n-placeholder="searchPlaceholder" placeholder="Nome della stazione"><div id="lineFilters" class="line-filters" role="group" aria-label="Lines"></div><div class="station-count"><strong id="resultsCount">0</strong><span data-i18n="stationCount">FERMATE</span></div><div id="stationList" class="station-list"></div><a id="playCity" class="play-city" href="game.html?city=milano"><span data-i18n="playCity">GIOCA IN QUESTA CITTÀ</span><b aria-hidden="true">→</b></a></aside>
     </div>
     <footer class="page-footer"><span>METROMIND</span><a id="mapSource" href="https://www.atm.it/it/AltriServizi/Trasporto/Documents/schema_rete_metro.pdf" target="_blank" rel="noopener" data-i18n="networkLink">rete ATM</a></footer>
+    <nav class="content-links" aria-label="Informazioni"><a id="cityGuide" href="citta/milano.html" data-content-city="milano" data-i18n="cityGuide">Guida della città</a><a href="guida.html" data-content-it="guida.html" data-content-en="en/guide.html" data-i18n="guideLink">Guida</a><a href="progetto.html" data-content-it="progetto.html" data-content-en="en/about.html" data-i18n="projectLink">Il progetto</a><a href="privacy.html" data-content-it="privacy.html" data-content-en="en/privacy.html" data-i18n="privacyLink">Privacy e cookie</a></nav>
+    <noscript><p>La mappa interattiva richiede JavaScript. Gli elenchi delle stazioni e le guide sono disponibili nelle <a href="guida.html">schede delle reti</a>.</p></noscript>
   </main>
   <script src="network.js"></script><script src="lisbon.js"></script><script src="vienna.js"></script><script src="barcelona.js"></script><script src="berlin.js"></script><script src="paris.js"></script><script src="london.js"></script>
-  <script src="translations.js?v=15"></script><script src="maps.js?v=15"></script>
+  <script src="translations.js?v=17"></script><script src="maps.js?v=17"></script>
   <script>if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./service-worker.js');</script>
 </body>
 </html>

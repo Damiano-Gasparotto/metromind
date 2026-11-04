@@ -1,4 +1,6 @@
-const requestedCity = new URLSearchParams(location.search).get('city');
+const gameParams = new URLSearchParams(location.search);
+const dailyChallenge = gameParams.get('mode')==='daily' && typeof MetroDaily!=='undefined' ? MetroDaily.descriptor(gameParams.get('date') || MetroDaily.today()) : null;
+const requestedCity = dailyChallenge?.city || gameParams.get('city');
 const cityId = ['lisbona','vienna','barcellona','berlino','parigi','londra'].includes(requestedCity) ? requestedCity : 'milano';
 const network = {
   milano: () => buildNetwork(),
@@ -67,16 +69,18 @@ function shortestRoute(start, end, waypoints) {
 }
 
 function createChallenge() {
-  const count = waypointCounts[$('difficulty').value];
+  const difficulty=dailyChallenge?.difficulty || $('difficulty').value;
+  const pick=dailyChallenge ? (()=>{const rng=MetroDaily.seeded(dailyChallenge.seed);return items=>items[Math.floor(rng()*items.length)];})() : random;
+  const count = waypointCounts[difficulty];
   let choice;
   for (let attempt=0; attempt<24; attempt++) {
     const picked=[];
-    while(picked.length<count+2) { const station=random(network.stations); if(!picked.includes(station)) picked.push(station); }
+    while(picked.length<count+2) { const station=pick(network.stations); if(!picked.includes(station)) picked.push(station); }
     const [start,end,...waypoints]=picked;
     const optimal=shortestRoute(start,end,waypoints);
     if (!optimal) continue;
     choice={start,end,waypoints,optimal};
-    const ceiling={easy:75,medium:110,hard:150}[$('difficulty').value];
+    const ceiling={easy:75,medium:110,hard:150}[difficulty];
     if(optimal.cost <= ceiling && optimal.stops >= 5) break;
   }
   return choice;
@@ -87,6 +91,8 @@ function newGame() {
   if(!challenge) return;
   game={...challenge,current:challenge.start,line:null,visited:new Set(),cost:0,stops:0,transfers:0,history:[],route:[challenge.start],complete:false};
   solutionVisible=false;
+  game.assisted=false;
+  if(dailyChallenge) { $('difficulty').value=dailyChallenge.difficulty; $('difficulty').disabled=true; }
   $('result').hidden=true;
   document.querySelector('.app').classList.remove('finished');
   $('missionDetails').open=false;
@@ -146,12 +152,8 @@ function move(segment) {
   if(game.current===game.end && game.visited.size===game.waypoints.length) {
     game.complete=true;
     document.querySelector('.app').classList.add('finished');
-    const extra=game.cost-game.optimal.cost;
-    const stars=extra===0?'★★★':extra<=8?'★★☆':'★☆☆';
+    renderResult();
     const result=$('result');
-    result.hidden=false;
-    result.innerHTML=`<div class="result-stars">${stars}</div><h2>${t('missionDone')}</h2><p>${t('yourTime')}: <strong>${game.cost}′</strong>. ${t('bestTime')}: <strong>${game.optimal.cost}′</strong>.</p><button id="nextGame" type="button">${t('newChallenge')}</button>`;
-    $('nextGame').addEventListener('click',newGame);
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
   render();
@@ -195,6 +197,11 @@ function renderLegend() {
 
 function render() {
   renderCityChrome();
+  if(dailyChallenge) {
+    $('dailyBanner').hidden=false;
+    $('dailyBanner').textContent=`${t('dailyTitle')} · ${dailyChallenge.date} · UTC`;
+    $('newGame').setAttribute('aria-label',t('dailyRestart'));
+  }
   $('levelPill').textContent=t($('difficulty').value);
   $('startName').textContent=game.start;
   $('endName').textContent=game.end;
@@ -297,6 +304,8 @@ function drawMap() {
 
 function toggleSolution() {
   solutionVisible=!solutionVisible;
+  if(solutionVisible) game.assisted=true;
+  if(game.complete) renderResult();
   $('showSolution').textContent=t(solutionVisible?'hideSolution':'showSolution');
   drawMap();
   if(solutionVisible) {
@@ -304,18 +313,72 @@ function toggleSolution() {
   } else render();
 }
 
+function resultStars() {
+  const extra=game.cost-game.optimal.cost;
+  return extra===0?'★★★':extra<=8?'★★☆':'★☆☆';
+}
+function resultCity() {
+  const prefix={milano:'milan',lisbona:'lisbon',vienna:'vienna',barcellona:'barcelona',berlino:'berlin',parigi:'paris',londra:'london'}[cityId];
+  return t(`${prefix}Name`).toUpperCase();
+}
+function shareText() {
+  const url=dailyChallenge ? `https://metromind.it/${dailyChallenge.url}` : `https://metromind.it/game.html?city=${cityId}`;
+  return `MetroMind · ${resultCity()}${dailyChallenge ? `\n${t('dailyTitle')} · ${dailyChallenge.date}` : ''}\n${resultStars()}\n${t('sharedTime')}: ${game.cost}′ · ${t('bestTime')}: ${game.optimal.cost}′\n${game.waypoints.length}/${game.waypoints.length} ${t('checkpoints').toLowerCase()} · ${game.transfers} ${t('transfers')}\n${t(game.assisted?'assisted':'unassisted')}\n${t('shareInvite')}\n${url}`;
+}
+function renderResult() {
+  const result=$('result');
+  result.hidden=false;
+  result.innerHTML=`<div class="result-stars">${resultStars()}</div><h2>${t('missionDone')}</h2><p>${t('yourTime')}: <strong>${game.cost}′</strong>. ${t('bestTime')}: <strong>${game.optimal.cost}′</strong>.</p><p>${t(game.assisted?'assisted':'unassisted')}</p><div class="result-actions"><button id="shareResult" type="button">${t('shareResult')} ↗</button><button id="saveCard" type="button">${t('saveCard')} ↓</button><button id="nextGame" type="button">${t(dailyChallenge?'dailyReplay':'newChallenge')}</button>${dailyChallenge?`<a href="game.html?city=${cityId}">${t('freePlay')}</a>`:''}</div><p id="shareStatus" role="status"></p><label id="shareFallback" hidden>${t('shareFallback')}<textarea id="shareText" readonly rows="7"></textarea></label>`;
+  $('nextGame').addEventListener('click',newGame);
+  $('shareResult').addEventListener('click',async()=>{
+    const text=shareText();
+    try {
+      if(navigator.share) await navigator.share({title:'MetroMind',text});
+      else if(navigator.clipboard?.writeText) {await navigator.clipboard.writeText(text);$('shareStatus').textContent=t('shareCopied');}
+      else throw new Error('Copy unavailable');
+    } catch(error) {
+      if(error.name==='AbortError') return;
+      $('shareStatus').textContent=t('shareFailed');
+      $('shareFallback').hidden=false; $('shareText').value=text; $('shareText').focus(); $('shareText').select();
+    }
+  });
+  $('saveCard').addEventListener('click',downloadResultCard);
+}
+async function downloadResultCard() {
+  if(document.fonts?.ready) await document.fonts.ready;
+  const canvas=document.createElement('canvas'); canvas.width=1080;canvas.height=1080;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#f4f1e9';ctx.fillRect(0,0,1080,1080);
+  ctx.fillStyle='#e12631';ctx.fillRect(64,64,110,110);
+  ctx.fillStyle='#fff';ctx.font='bold 84px "Plex Metro", sans-serif';ctx.fillText('M',84,149);
+  ctx.fillStyle='#172126';ctx.font='bold 54px "Plex Metro", sans-serif';ctx.fillText('METROMIND',202,140);
+  ctx.font='bold 34px "Plex Metro", sans-serif';ctx.fillText(dailyChallenge?`${t('dailyTitle')} · ${dailyChallenge.date}`:t('missionDone').toUpperCase(),64,250);
+  ctx.font='bold 94px "Plex Metro", sans-serif';ctx.fillText(resultCity(),64,370);
+  ctx.fillStyle='#e12631';ctx.font='bold 110px sans-serif';ctx.fillText(resultStars(),64,520);
+  ctx.fillStyle='#172126';ctx.font='bold 78px "Plex Metro", sans-serif';ctx.fillText(`${game.cost}′`,64,650);
+  ctx.font='34px "Plex Metro", sans-serif';ctx.fillText(`${t('sharedTime')} · ${t('bestTime')}: ${game.optimal.cost}′`,64,708);
+  ctx.fillText(`${game.waypoints.length}/${game.waypoints.length} ${t('checkpoints').toLowerCase()} · ${game.transfers} ${t('transfers')}`,64,776);
+  ctx.font='30px "Plex Metro", sans-serif';ctx.fillText(t(game.assisted?'assisted':'unassisted'),64,838);
+  ctx.fillRect(64,886,952,3);ctx.font='bold 40px "Plex Metro", sans-serif';ctx.fillText(t('shareInvite'),64,955);
+  ctx.font='30px "Plex Metro", sans-serif';ctx.fillText('metromind.it',64,1015);
+  canvas.toBlob(blob=>{
+    if(!blob)return;
+    const url=URL.createObjectURL(blob),link=document.createElement('a');
+    link.href=url;link.download=`metromind-${dailyChallenge?.date || cityId}.png`;link.click();setTimeout(()=>URL.revokeObjectURL(url),10000);
+  },'image/png');
+}
 $('newGame').addEventListener('click',newGame);
+const cityGuideLink = document.getElementById('cityGuide');
+if (cityGuideLink) {
+  cityGuideLink.dataset.contentCity = cityId;
+  cityGuideLink.href = `${language === 'en' ? 'en/cities' : 'citta'}/${cityId}.html`;
+}
 $('helpButton').addEventListener('click',()=>$('helpDialog').showModal());
 $('closeHelp').addEventListener('click',()=>$('helpDialog').close());
 $('helpDialog').addEventListener('click',event=>{if(event.target===$('helpDialog')) $('helpDialog').close();});
 window.addEventListener('metromind-language-change',()=>{
   $('showSolution').textContent=t(solutionVisible?'hideSolution':'showSolution');
-  if(game?.complete){
-    const result=$('result');
-    result.querySelector('h2').textContent=t('missionDone');
-    result.querySelector('p').innerHTML=`${t('yourTime')}: <strong>${game.cost}′</strong>. ${t('bestTime')}: <strong>${game.optimal.cost}′</strong>.`;
-    result.querySelector('button').textContent=t('newChallenge');
-  }
+  if(game?.complete) renderResult();
   if(game) render();
 });
 $('difficulty').addEventListener('change',newGame);
